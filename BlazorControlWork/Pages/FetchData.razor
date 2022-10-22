@@ -1,0 +1,56 @@
+﻿@page "/fetchdata"
+
+<PageTitle >Weather forecast</PageTitle>
+
+@using BlazorControlWork.Data
+@inject WeatherForecastService ForecastService
+
+
+<h1  >Личный кабинет</h1>
+<style @onload="CheckSession" ></style>
+<p>@login</p>
+<p>@name</p>
+<p>@second_name</p>
+<p>@email</p>
+<a href="" @onclick ="Exit" >@btnlabel</a>
+
+
+@code{
+    
+
+    string btnlabel="";
+    string name="";
+    string login="";
+    string second_name="";
+    string email="";
+    public void CheckSession()
+    {
+        
+
+        if (Session.Login != "")
+        {
+            name = "Имя: "+Session.Name;
+            login = "Логин: "+Session.Login;
+            second_name = "Фамилия: "+Session.Second_name;
+            email = "Почта: "+Session.Email;
+            btnlabel = "Выйти из аккаунта";
+        }
+        else
+        {
+            btnlabel = "";
+            name = "Нет входа в аккаунт";
+            second_name = "";
+            login = "";
+            email = "";
+        }
+    }
+    public void Exit()
+    {
+        Session.Name ="";
+            Session.Login = "";
+            Session.Second_name =  "";
+            Session.Email = "";
+    }
+    
+}
+

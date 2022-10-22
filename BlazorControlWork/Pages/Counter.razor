@@ -1,0 +1,50 @@
+﻿@page "/counter"
+
+<PageTitle>Авторизация</PageTitle>
+
+<h1>Авторизация</h1>
+<form>
+<div class="input_box">
+   
+<input type="text"  placeholder="Логин" @bind-value="@login" />
+ 
+<input type="password" placeholder="Пароль" @bind-value="@password" />
+
+<a class="btn" @onclick="Auth" >Войти</a>
+<p>@error</p>
+<p>@info</p>
+</div>
+</form>
+
+@code {
+    string login;
+    string password;
+    string error;
+    string name;
+    string info;
+    private void Auth()
+    {
+
+        User user = Database.FindOne(login);
+        if(user == null)
+        {
+            error = "Такого пользователя нет";
+        }
+        else if (user.Password != password) {
+            error = "Неправильный логин или пароль";
+            name = null;
+        }
+        else
+        {
+            error = "";
+            name = user.FirstName;
+            Session.Name = name;
+            Session.Login = user.Login;
+            Session.Second_name =  user.LastName;
+            Session.Email = user.Email;
+            info = "Вход выполнен";
+
+
+        }
+    }
+}

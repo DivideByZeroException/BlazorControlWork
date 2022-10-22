@@ -1,0 +1,72 @@
+﻿@page "/"
+@using BlazorControlWork.Data
+@using Microsoft.AspNetCore.Components.Web
+<PageTitle>Index</PageTitle>
+
+<h1>Окно регистрации</h1>
+<form>
+<div class="input_box">
+   
+<input type="text"  placeholder="Логин" @bind-value="@login" />
+ 
+<input type="password" placeholder="Пароль" @bind-value="@password" />
+<input type="password" placeholder="Повтор пароля" @bind-value="@repeat_password" />
+
+<input type="text" placeholder="Имя" @bind-value="@name" />
+<input type="text" placeholder="Фамилия" @bind-value="@second_name" />
+<input type="text" placeholder="Почта" @bind-value="@email" />
+<a class="btn" @onclick="Reg" > Зарегистрироваться</a>
+<p>@error</p>
+</div>
+</form>
+
+
+@code {
+    string login;
+    string password;
+    string repeat_password;
+    string name;
+    string second_name;
+    string email;
+    string error;
+    private void Reg()
+    {
+
+        if (@login == null || @password == null || @repeat_password == null || @name == null || @second_name==null || @email == null)
+        {
+            error= "Все поля должны быть заполнены";
+
+        }
+        else  if(@password != @repeat_password)
+        {
+            error= "Пароли не совпадают";
+
+        }
+        else
+        {
+
+
+            error = Database.AddToDB(new User(login, password, name, second_name, email));
+            Session.Name = name;
+            Session.Login = login;
+            Session.Second_name =  second_name;
+            Session.Email = email;
+            
+            login = null;
+            password = null;
+            repeat_password =null;
+            name = null;
+            second_name = null;
+            email = null;
+            
+
+
+        }
+    }
+}
+
+<style>
+    .input_box{display:flex;flex-direction:column;width:20%}
+     input{margin-bottom:10px;padding:7px;border-radius:10px;outline:none;border: 2px black solid}
+     .btn{background:#fff;font-size:20px;border-radius:10px;border: 2px black solid}
+</style>
